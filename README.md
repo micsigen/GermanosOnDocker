@@ -13,10 +13,7 @@ Docker is....  A container, not a VM
 For those with access the Oracle files can be downloaded from https://edelivery.oracle.com.  
 
 * The files needed for the 10.1.2 install are
- * V861206-01.zip
- * V861203-01.zip
- * V861200-01.zip
- * V861198-01.zip
+ * 
  
 # Base image
 
