@@ -1,5 +1,5 @@
-FROM ets04uga/jboss:eap-5.1.2
-MAINTAINER Eric Stiles <ets04uga@yahoo.com>
+FROM micsigen/weblogic-create-domain:10.3.6
+MAINTAINER Balazs Major <majorbalu@gmail.com>
 
 #######################################
 # environment variables
@@ -31,10 +31,13 @@ RUN chmod -R 755 $SCRIPT_DIR
 
 #######################################
 # copy ATG
-ADD $LOCAL_TOOLS/V35852-01.zip $BASE_TMP_PACKAGE_INSTALL/V35852-01.zip
+ADD $LOCAL_TOOLS/V35852-01.zip $BASE_TMP_PACKAGE_INSTALL/V35852-01.zip && /
+	$LOCAL_TOOLS/V35860-01.zip $BASE_TMP_PACKAGE_INSTALL/V35860-01.zip
 
 # unzip oracle zip file for ATG to ATG10.1.2_200RCN.bin
-RUN unzip $BASE_TMP_PACKAGE_INSTALL/V35852-01.zip -d $BASE_TMP_INSTALL
+# unzip oracle zip file for ATG Search to ATGSearch10.1.2-Linux64_48RCN
+RUN unzip $BASE_TMP_PACKAGE_INSTALL/V35852-01.zip -d $BASE_TMP_INSTALL && /
+	unzip $BASE_TMP_PACKAGE_INSTALL/V35860-01.zip -d $BASE_TMP_INSTALL
 
 # make ATG10.1.2_200RCN.bin executable for install
 RUN chmod +x $BASE_TMP_INSTALL/ATG10.1.2_200RCN.bin
