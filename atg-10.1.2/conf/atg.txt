@@ -1,0 +1,16 @@
+
+
+
+y
+/u01/oracle/atg/atg10.1.2
+y
+1,2,3,4
+4
+/u01/oracle/weblogic
+/u01/oracle/weblogic/wlserver_10.3
+/u01/oracle/weblogic/user_projects/domains/base_domain
+/usr/java/jdk1.7.0_79
+7001
+8860
+
+

@@ -1,5 +1,5 @@
 # 
-FROM oraclelinux:7
+FROM micsigen/oraclelinux-extend:7
 
 # Maintainer
 # ----------
