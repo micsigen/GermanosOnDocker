@@ -1,0 +1,10 @@
+
+
+
+y
+1
+/u01/oracle/atg/atg10.1.2
+y
+
+/u01/oracle/atg/atg10.1.2/Search10.1.2
+

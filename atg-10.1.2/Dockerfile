@@ -34,6 +34,7 @@ ADD $LOCAL_TOOLS/V35852-01.zip $BASE_TMP_PACKAGE_INSTALL/V35852-01.zip
 ADD	$LOCAL_TOOLS/V35860-01.zip $BASE_TMP_PACKAGE_INSTALL/V35860-01.zip
 ADD	$LOCAL_TOOLS/SiteBuilder-3.1.2-ATG10.1.jar $BASE_TMP_PACKAGE_INSTALL/SiteBuilder-3.1.2-ATG10.1.jar
 ADD $LOCAL_CONF/atg.txt $BASE_TMP_PACKAGE_INSTALL/atg.txt
+ADD $LOCAL_CONF/search.txt $BASE_TMP_PACKAGE_INSTALL/search.txt
 
 # unzip oracle zip file for ATG to ATG10.1.2_200RCN.bin
 # unzip oracle zip file for ATG Search to ATGSearch10.1.2-Linux64_48RCN.bin
@@ -47,6 +48,10 @@ RUN chmod +x $BASE_TMP_PACKAGE_INSTALL/ATG10.1.2_200RCN.bin && \
 	chmod +x $BASE_TMP_PACKAGE_INSTALL/ATGSearch10.1.2-Linux64_48RCN.bin
 
 RUN cat $BASE_TMP_PACKAGE_INSTALL/atg.txt | $BASE_TMP_PACKAGE_INSTALL/ATG10.1.2_200RCN.bin
+RUN cat $BASE_TMP_PACKAGE_INSTALL/search.txt | $BASE_TMP_PACKAGE_INSTALL/ATGSearch10.1.2-Linux64_48RCN.bin
+RUN mv $BASE_TMP_PACKAGE_INSTALL/SiteBuilder-3.1.2-ATG10.1.jar $ATG_DIR/SiteBuilder-3.1.2-ATG10.1.jar
+RUN cd $ATG_DIR && \
+ 	jar -xf SiteBuilder-3.1.2-ATG10.1.jar
 
 #######################################
 # copy jdbc driver to jboss location
