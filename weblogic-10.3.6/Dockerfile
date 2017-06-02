@@ -49,6 +49,7 @@ RUN java -Xmx1024m -jar $WLS_PKG -mode=silent -silent_xml=/u01/wls-silent.xml &&
 
 WORKDIR /u01/oracle/
 
+ENV WL_ROOT /u01/oracle/weblogic
 ENV PATH $PATH:/u01/oracle/weblogic/oracle_common/common/bin
 
 # Define default command to start bash. 

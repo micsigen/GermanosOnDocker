@@ -3,13 +3,9 @@ MAINTAINER Balazs Major <majorbalu@gmail.com>
 
 USER root
 
-# environment, it could be deleted after rebuild all images
-RUN yum -y install unzip.x86_64
-
 #######################################
 # environment variables
 #
-
 USER oracle
 
 # environment variable for local location
@@ -20,13 +16,13 @@ ENV LOCAL_TOOLS tools
 ENV BASE_TMP_PACKAGE_INSTALL /tmp/packages
 
 # environment variables for atg location
-ENV ATG_DIR /u01/oracle/atg/atg10.1.2
-ENV ATG_HOME $ATG_DIR/home
+ENV DYNAMO_ROOT /u01/oracle/atg/atg10.1.2
+ENV DYNAMO_HOME $ATG_DIR/home
 
 #######################################
 # create directories
 RUN mkdir -p $BASE_TMP_PACKAGE_INSTALL && \
-	mkdir -p $ATG_DIR
+	mkdir -p $DYNAMO_ROOT
 
 #######################################
 # copy ATG
@@ -49,9 +45,15 @@ RUN chmod +x $BASE_TMP_PACKAGE_INSTALL/ATG10.1.2_200RCN.bin && \
 
 RUN cat $BASE_TMP_PACKAGE_INSTALL/atg.txt | $BASE_TMP_PACKAGE_INSTALL/ATG10.1.2_200RCN.bin
 RUN cat $BASE_TMP_PACKAGE_INSTALL/search.txt | $BASE_TMP_PACKAGE_INSTALL/ATGSearch10.1.2-Linux64_48RCN.bin
-RUN mv $BASE_TMP_PACKAGE_INSTALL/SiteBuilder-3.1.2-ATG10.1.jar $ATG_DIR/SiteBuilder-3.1.2-ATG10.1.jar
-RUN cd $ATG_DIR && \
+RUN mv $BASE_TMP_PACKAGE_INSTALL/SiteBuilder-3.1.2-ATG10.1.jar $DYNAMO_ROOT/SiteBuilder-3.1.2-ATG10.1.jar
+RUN cd $DYNAMO_ROOT && \
  	jar -xf SiteBuilder-3.1.2-ATG10.1.jar
+
+RUN rm $BASE_TMP_PACKAGE_INSTALL/ATG10.1.2_200RCN.bin && \
+	rm $BASE_TMP_PACKAGE_INSTALL/ATGSearch10.1.2-Linux64_48RCN.bin && \
+	rm $DYNAMO_ROOT/SiteBuilder-3.1.2-ATG10.1.jar && \
+	rm $BASE_TMP_PACKAGE_INSTALL/atg.txt && \
+	rm $BASE_TMP_PACKAGE_INSTALL/search.txt
 
 #######################################
 # copy jdbc driver to jboss location
