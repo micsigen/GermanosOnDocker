@@ -16,10 +16,11 @@ ENV EXTRA_JAVA_PROPERTIES $EXTRA_JAVA_PROPERTIES -Djava.security.egd=file:///dev
 
 # Add files required to build this image
 COPY script/create-wls-domain.py /u01/oracle/
-COPY script/start-services.sh /
 
 # Root commands
 USER root
+ADD script/start-services.sh /
+RUN chmod +x /start-services.sh
 RUN echo ". /u01/oracle/weblogic/user_projects/domains/base_domain/bin/setDomainEnv.sh" >> /root/.bashrc && \
     echo "export PATH=$PATH:/u01/oracle/weblogic/wlserver_10.3/common/bin:/u01/oracle/weblogic/user_projects/domains/base_domain/bin" >> /root/.bashrc
 
@@ -31,7 +32,7 @@ RUN /u01/oracle/weblogic/wlserver_10.3/common/bin/wlst.sh -skipWLSModuleScanning
     echo "username=weblogic" > /u01/oracle/weblogic/user_projects/domains/base_domain/servers/AdminServer/security/boot.properties && \ 
     echo "password=$ADMIN_PASSWORD" >> /u01/oracle/weblogic/user_projects/domains/base_domain/servers/AdminServer/security/boot.properties && \
     echo ". /u01/oracle/weblogic/user_projects/domains/base_domain/bin/setDomainEnv.sh" >> /u01/oracle/.bashrc && \ 
-    echo "export PATH=$PATH:/u01/oracle/weblogic/wlserver_10.3/common/bin:/u01/oracle/weblogic/user_projects/domains/base_domain/bin" >> /u01/oracle/.bashrc 
+    echo "export PATH=$PATH:/u01/oracle/weblogic/wlserver_10.3/common/bin:/u01/oracle/weblogic/user_projects/domains/base_domain/bin" >> /u01/oracle/.bashrc
 
 # Expose Node Manager default port, and also default http/https ports for admin console
 EXPOSE $NM_PORT $ADMIN_PORT 
@@ -41,5 +42,8 @@ WORKDIR /u01/oracle
 
 ENV PATH $PATH:/u01/oracle/weblogic/wlserver_10.3/common/bin:/u01/oracle/weblogic/user_projects/domains/base_domain/bin:/u01/oracle
 
-# Define default command to start bash. 
+# Define default command to start bash.
+USER root
+RUN touch /u01/oracle/weblogic/user_projects/domains/base_domain/servers/AdminServer/data/ldap/ldapfiles/EmbeddedLDAP.lok
+RUN chown oracle:oracle -R /u01
 CMD ["/start-services.sh"]

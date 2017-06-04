@@ -24,7 +24,7 @@ if [ ! -f /.root_pw_set ]; then
         ssh-keygen -A
 fi
 
-/u01/oracle/startWebLogic.sh &
+/bin/su oracle -c /u01/oracle/weblogic/startWebLogic.sh &
 
 echo $'\n'
 echo "Container started successfully!"

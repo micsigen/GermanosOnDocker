@@ -70,4 +70,8 @@ WORKDIR /u01/oracle/atg/atg10.1.2
 #######################################
 # DONE
 
+USER root
+
+# touch /u01/oracle/weblogic/user_projects/domains/base_domain/servers/AdminServer/data/ldap/ldapfiles/EmbeddedLDAP.lok
+
 CMD ["/start-services.sh"]
