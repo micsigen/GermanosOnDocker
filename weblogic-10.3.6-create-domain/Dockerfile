@@ -16,6 +16,7 @@ ENV EXTRA_JAVA_PROPERTIES $EXTRA_JAVA_PROPERTIES -Djava.security.egd=file:///dev
 
 # Add files required to build this image
 COPY script/create-wls-domain.py /u01/oracle/
+COPY script/start-services.sh /
 
 # Root commands
 USER root
@@ -41,4 +42,4 @@ WORKDIR /u01/oracle
 ENV PATH $PATH:/u01/oracle/weblogic/wlserver_10.3/common/bin:/u01/oracle/weblogic/user_projects/domains/base_domain/bin:/u01/oracle
 
 # Define default command to start bash. 
-CMD ["startWebLogic.sh"]
+CMD ["/start-services.sh"]
