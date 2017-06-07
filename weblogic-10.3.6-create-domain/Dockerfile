@@ -44,6 +44,8 @@ ENV PATH $PATH:/u01/oracle/weblogic/wlserver_10.3/common/bin:/u01/oracle/weblogi
 
 # Define default command to start bash.
 USER root
-RUN touch /u01/oracle/weblogic/user_projects/domains/base_domain/servers/AdminServer/data/ldap/ldapfiles/EmbeddedLDAP.lok
+
+# RUN touch /u01/oracle/weblogic/user_projects/domains/base_domain/servers/AdminServer/data/ldap/ldapfiles/EmbeddedLDAP.lok
 RUN chown oracle:oracle -R /u01
+
 CMD ["/start-services.sh"]
