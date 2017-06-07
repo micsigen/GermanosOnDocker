@@ -19,6 +19,10 @@ ENV DYNAMO_HOME $DYNAMO_ROOT/home
 ENV HOSTNAME localhost
 ENV ANT_HOME /opt/ant
 ENV PATH ${PATH}:/opt/ant/bin
+ENV JAVA_VM ${JAVA_HOME}/bin/java
+
+ENV PRODUCTION_PORT 7003
+ENV PUBLISHING_PORT 7004
 
 #######################################
 # create directories
@@ -34,6 +38,7 @@ ADD	$LOCAL_TOOLS/SiteBuilder-3.1.2-ATG10.1.jar $BASE_TMP_PACKAGE_INSTALL/SiteBui
 ADD $LOCAL_CONF/atg.txt $BASE_TMP_PACKAGE_INSTALL/atg.txt
 ADD $LOCAL_CONF/search.txt $BASE_TMP_PACKAGE_INSTALL/search.txt
 ADD $LOCAL_CONF/service.txt $BASE_TMP_PACKAGE_INSTALL/service.txt
+ADD $LOCAL_CONF/SiteBuilderLicense.properties $BASE_TMP_PACKAGE_INSTALL/SiteBuilderLicense.properties
 
 # unzip oracle zip file for ATG to ATG10.1.2_200RCN.bin
 # unzip oracle zip file for ATG Search to ATGSearch10.1.2-Linux64_48RCN.bin
@@ -55,7 +60,8 @@ RUN cat $BASE_TMP_PACKAGE_INSTALL/search.txt | $BASE_TMP_PACKAGE_INSTALL/ATGSear
 RUN cat $BASE_TMP_PACKAGE_INSTALL/service.txt | $BASE_TMP_PACKAGE_INSTALL/ATG-Service10.1.2_81RCN.bin
 RUN mv $BASE_TMP_PACKAGE_INSTALL/SiteBuilder-3.1.2-ATG10.1.jar $DYNAMO_ROOT/SiteBuilder-3.1.2-ATG10.1.jar
 RUN cd $DYNAMO_ROOT && \
- 	jar -xf SiteBuilder-3.1.2-ATG10.1.jar
+ 	jar -xf SiteBuilder-3.1.2-ATG10.1.jar && \
+ 	mv $BASE_TMP_PACKAGE_INSTALL/SiteBuilderLicense.properties /u01/oracle/atg/atg.10.1.2/home/localconfig
 
 RUN rm $BASE_TMP_PACKAGE_INSTALL/ATG10.1.2_200RCN.bin && \
 	rm $BASE_TMP_PACKAGE_INSTALL/ATGSearch10.1.2-Linux64_48RCN.bin && \
@@ -65,6 +71,8 @@ RUN rm $BASE_TMP_PACKAGE_INSTALL/ATG10.1.2_200RCN.bin && \
 	rm $BASE_TMP_PACKAGE_INSTALL/search.txt && \
 	rm $BASE_TMP_PACKAGE_INSTALL/service.txt
 
+EXPOSE $PRODUCTION_PORT $PUBLISHING_PORT
+
 WORKDIR /u01/oracle/atg/atg10.1.2
 
 #######################################
@@ -72,6 +80,9 @@ WORKDIR /u01/oracle/atg/atg10.1.2
 
 USER root
 
-# touch /u01/oracle/weblogic/user_projects/domains/base_domain/servers/AdminServer/data/ldap/ldapfiles/EmbeddedLDAP.lok
+# Environment folders
+RUN mkdir /opt/atg/ && \
+	mkdir /opt/atg/build && \
+	chown oracle:oracle -R /opt/atg/
 
 CMD ["/start-services.sh"]
